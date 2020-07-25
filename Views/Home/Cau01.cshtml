@@ -1,0 +1,39 @@
+<head>
+	<title>Câu 01 - Đề kiểm tra môn Framework 2018-2019</title>
+</head>
+
+<body>
+
+<form action="/Home/Cau01" method="POST">
+	<table border="0px" cellspacing="0px" cellpadding="5px"> 
+		<tr>
+			<td>Mã bài hát</td>
+			<td><input type="text" name="MaBaiHat" value=""></td>
+		</tr>
+
+		<tr>
+			<td>Tên bài hát</td>
+			<td><input type="text" name="TenBaiHat" value=""></td>
+		</tr>
+
+		<tr>
+			<td>Thể loại</td>
+			<td><input type="text" name="TheLoai" value=""></td>
+		</tr>
+
+		<tr>
+			<td colspan="2"><input type="submit" name="Them" value="Thêm"></td>
+		</tr>
+	</table>	
+</form>
+
+@{
+    if (ViewData["result"] != null) 
+    {
+        <p>Result is @ViewData["result"]</p>
+    }
+}
+
+<a href="/Home">Home</a>
+
+</body>

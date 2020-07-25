@@ -1,0 +1,29 @@
+<head>
+	<title>Câu 04 - Đề kiểm tra môn Framework 2018-2019</title>
+</head>
+
+<body>
+
+<table border="1px" cellpadding="5px" cellspacing="0px">
+	<tr>
+		<th>STT</th>
+		<th>Tên ca sĩ</th>
+	</tr>
+	
+    @{
+        List<DeThamKhaoHK2_2018_2019.Models.CaSi> casis = ViewData["casis"] as List<DeThamKhaoHK2_2018_2019.Models.CaSi>;
+        for(int i=0; i<casis.Count; i+=1) 
+        {
+            <tr>
+                <td>@(i+1)</td>
+                <td>@casis[i].TenCaSi</td>
+            </tr>
+        }
+    }		
+	
+</table> 
+
+<a href="/Home">Home</a>
+
+</body>
+

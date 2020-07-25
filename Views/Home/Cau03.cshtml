@@ -1,0 +1,90 @@
+<head>
+	<title>Câu 03 - Đề kiểm tra môn Framework 2018-2019</title>
+</head>
+
+<body>
+
+<style type="text/css">
+	.xoaPlayList {
+		text-decoration: underline;
+		color: blue;
+		border-width: 0px;        
+	}
+</style>
+
+Tên người nghe 
+<select id="danhSachNguoiNghe">
+    <option value="-" selected>---</option>
+    @{
+        List<DeThamKhaoHK2_2018_2019.Models.NguoiNghe> nns = ViewData["nns"] as List<DeThamKhaoHK2_2018_2019.Models.NguoiNghe>;
+        foreach(DeThamKhaoHK2_2018_2019.Models.NguoiNghe nn in nns)
+        {
+            <option value="@nn.MaNN">@nn.TenNN</option>
+        }
+    }	
+</select>
+
+<br>
+
+<div id="danhSachPlaylist"></div>
+
+<a href="/Home">Home</a>
+
+<script type="text/javascript" src="~/lib/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#danhSachNguoiNghe").change(function () {
+			let MaNN = $(this).val();
+
+            if (MaNN === "-") {
+                return;
+            }
+
+			//Lấy danh sách playlist người nghe 
+			$.post(`/Home/Cau03_AJAX_GetPlaylist`, {MaNN: MaNN}, function (results, status, xhr) {
+				let htmlDanhSach = "";
+
+				if (results) {
+					let playlists = JSON.parse(results.replace(/&quot;/g, `"`));
+
+					htmlDanhSach += `
+<table border="1px" cellspacing="0px" cellpadding="5px">
+	<tr>
+		<th>STT</th>
+		<th>Tên playlist </th>
+		<th>Chức năng </th>
+	</tr>
+					`;
+
+					playlists.forEach((playlist, index) => {
+						htmlDanhSach +=  `
+	<tr class="playlist">
+		<td>${index+1}</td>
+		<td>${playlist.TenPlayList}</td>
+		<td><button class="xoaPlayList" MaPlayList="${playlist.MaPlayList}">Xóa</button></td>
+	</tr>
+						`;
+					});
+					htmlDanhSach += `
+</table>
+					`;
+				}
+				$("#danhSachPlaylist").html(htmlDanhSach);
+
+				//Sự kiên khi nhấn nút xóa 
+				$(".xoaPlayList").unbind("click");
+				$(".xoaPlayList").click(function () {
+					let MaPlayList = $(this).attr("MaPlayList");
+					$.post(`/Home/Cau03_AJAX_DeletePlaylist`, {MaPlayList: MaPlayList},  (results, status, xhr) => {
+						if (results) {
+							console.log("results is ", results);
+							$(this).parents(".playlist").remove();
+						}
+					});
+				});
+			});
+		});
+	});
+</script>
+
+</body>

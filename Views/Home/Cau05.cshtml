@@ -1,0 +1,31 @@
+<head>
+	<title>Câu 05 - Đề kiểm tra môn Framework 2018-2019</title>
+</head>
+
+<body>
+
+<table border="1px" cellpadding="5px" cellspacing="0px">
+	<tr>
+		<th>STT</th>
+		<th>Tên bài hát</th>
+		<th>Số lần xuất hiện</th>
+	</tr>
+	
+    @{
+        List<DeThamKhaoHK2_2018_2019.Models.BaiHat_SoLanXuatHien> bhslxhs = ViewData["bhslxhs"] as List<DeThamKhaoHK2_2018_2019.Models.BaiHat_SoLanXuatHien>;
+        for(int i=0; i<bhslxhs.Count; i+=1) 
+        {
+            <tr>
+                <td>@(i+1)</td>
+                <td>@bhslxhs[i].TenBaiHat</td>
+                <td>@bhslxhs[i].SoLanXuatHien</td>
+            </tr>
+        }
+    }		
+	
+</table> 
+
+<a href="/Home">Home</a>
+
+</body>
+

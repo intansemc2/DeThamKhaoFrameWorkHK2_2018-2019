@@ -1,0 +1,51 @@
+<head>
+	<title>Câu 02 - Đề kiểm tra môn Framework 2018-2019</title>
+</head>
+
+<body>
+
+Ngày sinh: <input type="date" id="chonNgaySinh">
+<div id="danhSachCaSi"></div>
+
+<a href="/Home">Home</a>
+
+<script type="text/javascript" src="~/lib/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#chonNgaySinh").change(function () {
+			let newNgaySinh = $(this).val();
+
+			$.post(`/Home/Cau02_AJAX`, {NgayThang: newNgaySinh}, function (results, status, xhr) {
+				let htmlDanhSach = "Danh sách ca sĩ ";
+
+				if (results) {
+					let casis = JSON.parse(results.replace(/&quot;/g, `"`));
+
+					htmlDanhSach += `
+<table border="1px" cellspacing="0px" cellpadding="5px">
+	<tr>
+		<th>STT</th>
+		<th>Tên ca sĩ</th>
+	</tr>
+					`;
+
+					casis.forEach((casi, index) => {
+						htmlDanhSach +=  `
+	<tr>
+		<td>${index}</td>
+		<td>${casi.TenCaSi}</td>
+	</tr>
+						`;
+					});
+					htmlDanhSach += `
+</table>
+					`;
+				}
+				$("#danhSachCaSi").html(htmlDanhSach);
+			});
+		});
+	});
+</script>
+
+</body>
+

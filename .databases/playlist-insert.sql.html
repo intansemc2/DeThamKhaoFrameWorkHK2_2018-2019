@@ -1,0 +1,98 @@
+<div id="container"></div>
+
+<script type="text/javascript">
+	let container = document.querySelector("#container");
+	let content = "";
+
+	let numberBaiHat = 500;
+	let numberTheLoai = 10;
+	let numberCaSi = 100;
+	let numberNguoiNghe = 100;
+	let numberPlayList = 200;
+	let numberBaiHatEachPlayList = numberBaiHat;
+	let numberBaiHatEachCaSi = numberBaiHat;
+
+	let BaiHatQueries = Array(numberBaiHat)
+		.fill("")
+		.map((item, index) => `('BH${    `${index}`.padStart(3, '0')    }', 'This song make you deaf v${    `${index}`.padStart(3, '0')    }', 'Deaf Type v${    `${Math.floor(Math.random()*numberTheLoai)}`.padStart(3, '0')    }')`);
+
+	let CaSiQueries = Array(numberCaSi)
+		.fill("")
+		.map((item, index) => `('CS${    `${index}`.padStart(3, '0')    }', 'My life is a lie ${    `${index}`.padStart(3, '0')    }', '${Math.floor(Math.random()*2)}', '2020-07-${    `${Math.floor(Math.random()*31)+1}`.padStart(2, '0')    }')`);
+
+	let NguoiNgheQueries = Array(numberNguoiNghe)
+		.fill("")
+		.map((item, index) => `('NN${    `${index}`.padStart(3, '0')    }', 'Hearing-impaired  ${    `${index}`.padStart(3, '0')    }', '${Math.floor(Math.random()*2)}')`);
+
+	let PlayListBaiHatQueries = [];
+	let PlayListQueries = Array(numberPlayList)
+		.fill("")
+		.map((item, index) => {
+			let number = Math.floor(Math.random()*numberBaiHatEachPlayList + 1);
+			let idUsed = [];
+			PlayListBaiHatQueries = PlayListBaiHatQueries.concat(Array(number)
+				.fill("")
+				.map(item2 => { 
+					let id = `BH${    `${Math.floor(Math.random()*numberBaiHat)}`.padStart(3, '0')    }`;
+					while (idUsed.find(item3 => item3 == id)) {
+						id = `BH${    `${Math.floor(Math.random()*numberBaiHat)}`.padStart(3, '0')    }`;
+					}
+					idUsed.push(id);
+					return `('PL${    `${index}`.padStart(3, '0')    }', '${id}')`
+				})
+			);
+
+			return `('PL${    `${index}`.padStart(3, '0')    }', 'Scrapy list ${    `${index}`.padStart(3, '0')    }', '${number}', 'NN${    `${Math.floor(Math.random()*numberNguoiNghe)}`.padStart(3, '0')    }')`;
+		});
+
+	let CaSiBaiHatQueries = [];
+	CaSiQueries.forEach((item, index) => {
+		let number = Math.floor(Math.random()*numberBaiHatEachCaSi + 1);
+		if (number >= numberBaiHat*0.9) {
+			number = numberBaiHat;
+		}
+		let idUsed = [];
+		CaSiBaiHatQueries = CaSiBaiHatQueries.concat(Array(number)
+			.fill("")
+			.map(item2 => { 
+				let id = `BH${    `${Math.floor(Math.random()*numberBaiHat)}`.padStart(3, '0')    }`;
+				while (idUsed.find(item3 => item3 == id)) {
+					id = `BH${    `${Math.floor(Math.random()*numberBaiHat)}`.padStart(3, '0')    }`;
+				}
+				idUsed.push(id);
+				return `('CS${    `${index}`.padStart(3, '0')    }', '${id}')`
+			})
+		);
+	});
+	
+
+	content += `
+<textarea style="width: 100%; height: 800px;">
+	-- -- INSERT INTO BAIHAT -- --
+	INSERT INTO BAIHAT (MaBaiHat, TenBaiHat, TheLoai) VALUES 
+${BaiHatQueries.join(",\n")};
+
+	-- -- INSERT INTO CASI -- --
+	INSERT INTO CASI (MaCaSi, TenCaSi, GioiTinh, NamSinh) VALUES 
+${CaSiQueries.join(",\n")};
+
+	-- -- INSERT INTO NGUOINGHE -- --
+	INSERT INTO NGUOINGHE (MaNN, TenNN, GioiTinh) VALUES 
+${NguoiNgheQueries.join(",\n")};
+
+	-- -- INSERT INTO PLAYLIST -- --
+	INSERT INTO PLAYLIST (MaPlayList, TenPlayList, SoLuong, MaNN) VALUES 
+${PlayListQueries.join(",\n")};
+
+	-- -- INSERT INTO CASI BAIHAT -- --
+	INSERT INTO CASI_BAIHAT (MaCaSi, MaBaiHat) VALUES 
+${CaSiBaiHatQueries.join(",\n")};
+
+	-- -- INSERT INTO PLAYLIST BAIHAT -- --
+	INSERT INTO PLAYLIST_BAIHAT (MaPlayList, MaBaiHat) VALUES 
+${PlayListBaiHatQueries.join(",\n")};
+</textarea>
+	`;
+
+	container.innerHTML = content;
+</script>
